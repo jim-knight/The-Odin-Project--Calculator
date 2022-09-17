@@ -8,6 +8,7 @@ TODO:
 4. Create function to populate display when number buttons are clicked. Store "display value" in a variable.
 5. Create function that makes the calculator work!
 
+EXTRA: Style calculator once completed to use stock images to look like an actual calculator. Refer to images within /reference-img folder 
 */
 
 // Math operators
