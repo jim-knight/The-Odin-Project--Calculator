@@ -16,10 +16,11 @@ const display = document.getElementById('display'),
 	operatorButtons = document.querySelectorAll('.operator');
 
 let curDisplay = '',
-	storedDisplay = '';
+	storedDisplay = '',
+	curOperator = '';
 
 // Math operators
-function opPlus(x, y) {
+function opAdd(x, y) {
 	return x + y;
 }
 function opSubtract(x, y) {
@@ -32,9 +33,22 @@ function opDivide(x, y) {
 	return x / y;
 }
 
-// Our operate function
+// Operate
 function operate(x, y, op) {
-	return op(x, y);
+	x = Number(x);
+	y = Number(y);
+	switch (op) {
+		case '+':
+			return opAdd(x, y);
+		case '-':
+			return opSubtract(x, y);
+		case 'x':
+			return opMultiply(x, y);
+		case '/':
+			return opDivide(x, y);
+		default:
+			return null;
+	}
 }
 
 // Append number to display
@@ -54,6 +68,28 @@ function resetMemory() {
 	storedDisplay = '';
 }
 
+// Operator conversion
+function operatorConversion(operator) {
+	if (operator == '+') return '+';
+	if (operator == '-') return '-';
+	if (operator == 'X') return '*';
+	if (operator == '/') return '/';
+}
+
+// When an operator is selected, set it as active, store current display and reset for next entry
+function setOperator(operator) {
+	storedDisplay = curDisplay;
+	curOperator = operatorConversion(operator);
+	clearDisplay();
+	console.log(`Stored value: ${storedDisplay}, operator ready for use: ${curOperator}`);
+}
+
+// Evaluate and output result
+function evaluateResult() {
+	console.log(storedDisplay, curOperator, curDisplay);
+	display.textContent = operate(curDisplay, storedDisplay, curOperator);
+}
+
 // Event listeners
 digitButtons.forEach((button) => {
 	button.addEventListener('click', () => {
@@ -66,12 +102,19 @@ operatorButtons.forEach((button) => {
 		if (button.id == 'clear') {
 			clearDisplay();
 			console.log('Display cleared!');
+			return;
 		}
 		if (button.id == 'reset') {
 			clearDisplay();
 			display.textContent = '0';
 			resetMemory();
 			console.log('Memory cleared!');
+			return;
 		}
+		if (button.id == 'equals') {
+			evaluateResult();
+			return;
+		}
+		setOperator(button.textContent);
 	});
 });
