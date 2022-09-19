@@ -20,10 +20,10 @@ let curDisplay = '',
 	curOperator = '';
 
 // Math operators
-function opAdd(x, y) {
+function opPlus(x, y) {
 	return x + y;
 }
-function opSubtract(x, y) {
+function opMinus(x, y) {
 	return x - y;
 }
 function opMultiply(x, y) {
@@ -37,17 +37,16 @@ function opDivide(x, y) {
 function operate(x, y, op) {
 	x = +x;
 	y = +y;
-	op = operatorConversion(op);
 	console.log(`X value: ${x}, Y value: ${y}, Operator: ${op}`);
 	switch (op) {
 		case '+':
-			return x + y;
+			return opPlus(x, y);
 		case '-':
-			return x - y;
-		case 'x':
-			return x * y;
+			return opMinus(x, y);
+		case '*':
+			return opMultiply(x, y);
 		case '/':
-			return x / y;
+			return opDivide(x, y);
 		default:
 			return null;
 	}
@@ -72,10 +71,10 @@ function resetMemory() {
 
 // Operator conversion
 function operatorConversion(operator) {
-	if (operator == '+') return '+';
-	if (operator == '-') return '-';
-	if (operator == 'X') return '*';
-	if (operator == '/') return '/';
+	if (operator === 'plus') return '+';
+	if (operator === 'minus') return '-';
+	if (operator === 'multiply') return '*';
+	if (operator === 'divide') return '/';
 }
 
 function roundResult(number) {
@@ -86,13 +85,14 @@ function roundResult(number) {
 function setOperator(operator) {
 	storedDisplay = curDisplay;
 	curOperator = operatorConversion(operator);
+	console.log(curOperator);
 	clearDisplay();
 }
 
 // Evaluate and output result
 function evaluateResult() {
 	console.log(storedDisplay, curOperator, curDisplay);
-	display.textContent = operate(curDisplay, storedDisplay, curOperator);
+	display.textContent = operate(storedDisplay, curDisplay, curOperator);
 	curDisplay = '';
 }
 
@@ -121,6 +121,6 @@ operatorButtons.forEach((button) => {
 			evaluateResult();
 			return;
 		}
-		setOperator(button.textContent);
+		setOperator(button.id);
 	});
 });
