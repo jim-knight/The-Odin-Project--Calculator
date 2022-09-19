@@ -35,17 +35,19 @@ function opDivide(x, y) {
 
 // Operate
 function operate(x, y, op) {
-	x = Number(x);
-	y = Number(y);
+	x = +x;
+	y = +y;
+	op = operatorConversion(op);
+	console.log(`X value: ${x}, Y value: ${y}, Operator: ${op}`);
 	switch (op) {
 		case '+':
-			return opAdd(x, y);
+			return x + y;
 		case '-':
-			return opSubtract(x, y);
+			return x - y;
 		case 'x':
-			return opMultiply(x, y);
+			return x * y;
 		case '/':
-			return opDivide(x, y);
+			return x / y;
 		default:
 			return null;
 	}
@@ -76,18 +78,22 @@ function operatorConversion(operator) {
 	if (operator == '/') return '/';
 }
 
+function roundResult(number) {
+	return Math.round(number * 1000) / 1000;
+}
+
 // When an operator is selected, set it as active, store current display and reset for next entry
 function setOperator(operator) {
 	storedDisplay = curDisplay;
 	curOperator = operatorConversion(operator);
 	clearDisplay();
-	console.log(`Stored value: ${storedDisplay}, operator ready for use: ${curOperator}`);
 }
 
 // Evaluate and output result
 function evaluateResult() {
 	console.log(storedDisplay, curOperator, curDisplay);
 	display.textContent = operate(curDisplay, storedDisplay, curOperator);
+	curDisplay = '';
 }
 
 // Event listeners
