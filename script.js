@@ -37,7 +37,7 @@ function opDivide(x, y) {
 function operate(x, y, op) {
 	x = +x;
 	y = +y;
-	console.log(`X value: ${x}, Y value: ${y}, Operator: ${op}`);
+	console.log(`Stored value: ${x}, Current value: ${y}, Operator: ${op}`);
 	switch (op) {
 		case '+':
 			return opPlus(x, y);
@@ -50,6 +50,14 @@ function operate(x, y, op) {
 		default:
 			return null;
 	}
+}
+
+// Operator conversion
+function operatorConversion(operator) {
+	if (operator === 'plus') return '+';
+	if (operator === 'minus') return '-';
+	if (operator === 'multiply') return '*';
+	if (operator === 'divide') return '/';
 }
 
 // Append number to display
@@ -69,20 +77,10 @@ function resetMemory() {
 	storedDisplay = '';
 }
 
-// Operator conversion
-function operatorConversion(operator) {
-	if (operator === 'plus') return '+';
-	if (operator === 'minus') return '-';
-	if (operator === 'multiply') return '*';
-	if (operator === 'divide') return '/';
-}
-
-function roundResult(number) {
-	return Math.round(number * 1000) / 1000;
-}
-
 // When an operator is selected, set it as active, store current display and reset for next entry
 function setOperator(operator) {
+	if (curOperator !== null) evaluateResult();
+	// curDisplay = display.textContent;
 	storedDisplay = curDisplay;
 	curOperator = operatorConversion(operator);
 	console.log(curOperator);
@@ -91,9 +89,13 @@ function setOperator(operator) {
 
 // Evaluate and output result
 function evaluateResult() {
-	console.log(storedDisplay, curOperator, curDisplay);
+	if (curOperator == '/' && curDisplay.textContent == '0') {
+		return alert(`I'm sorry, you can't divide by 0!`);
+	}
 	display.textContent = operate(storedDisplay, curDisplay, curOperator);
-	curDisplay = '';
+	storedDisplay = display.textContent;
+	// curOperator = '';
+	console.log(`New stored value: ${storedDisplay}`);
 }
 
 // Event listeners
